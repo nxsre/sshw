@@ -17,7 +17,7 @@ import (
 
 type Node struct {
 	Name           string           `yaml:"name"`
-	Alias          string           `yaml:"alias"`
+	Alias          string           `yaml:"q"`
 	Host           string           `yaml:"host"`
 	User           string           `yaml:"user"`
 	Port           int              `yaml:"port"`

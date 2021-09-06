@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/manifoldco/promptui"
-	"github.com/yinheli/sshw"
+	"github.com/nxsre/sshw"
 )
 
 const prev = "-parent-"
@@ -80,6 +80,7 @@ func main() {
 		if node != nil {
 			client := sshw.NewClient(node)
 			client.Login()
+			client.StartSession()
 			return
 		}
 	}
@@ -91,6 +92,7 @@ func main() {
 
 	client := sshw.NewClient(node)
 	client.Login()
+	client.StartSession()
 }
 
 func choose(parent, trees []*sshw.Node) *sshw.Node {
