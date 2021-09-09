@@ -73,7 +73,34 @@ func genSSHConfigWithStdio(node *Node, winch <-chan ssh.Window, w, h int, stdin 
 		Stdout: stdout,
 		Stderr: stderr,
 	})
+
+	var err error
 	var authMethods []gossh.AuthMethod
+
+	var pemBytes []byte
+	if node.KeyPath == "" {
+		pemBytes, err = ioutil.ReadFile(path.Join(node.User, ".ssh/id_rsa"))
+	} else {
+		pemBytes, err = ioutil.ReadFile(node.KeyPath)
+	}
+
+	if err != nil && node.PrivateKey == "" {
+		l.Error(err)
+	} else {
+		pemBytes = []byte(node.PrivateKey)
+		var signer gossh.Signer
+		if node.Passphrase != "" {
+			signer, err = gossh.ParsePrivateKeyWithPassphrase(pemBytes, []byte(node.Passphrase))
+		} else {
+			signer, err = gossh.ParsePrivateKey(pemBytes)
+		}
+		if err != nil {
+			l.Error(err)
+		} else {
+			authMethods = append(authMethods, gossh.PublicKeys(signer))
+		}
+	}
+
 	password := node.password()
 
 	if password != nil {

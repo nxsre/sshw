@@ -22,6 +22,7 @@ type Node struct {
 	User           string           `yaml:"user"`
 	Port           int              `yaml:"port"`
 	KeyPath        string           `yaml:"keypath"`
+	PrivateKey     string           `yaml:"private-key"`
 	Passphrase     string           `yaml:"passphrase"`
 	Password       string           `yaml:"password"`
 	CallbackShells []*CallbackShell `yaml:"callback-shells"`
